@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, pickle, string, sys
+import os, pickle, platform, string, sys
 from colorama import init, Fore, Style
 
 # songs
@@ -319,7 +319,7 @@ def kill_hint():
 
 def loadf():
     global fname, hints
-    if os.stat(fname).st_size != 0:
+    if os.path.isfile(fname) and os.stat(fname).st_size != 0:
         f = open(fname, 'rb')
         hints = pickle.load(f)
         f.close()
@@ -363,8 +363,12 @@ def main_loop():
     main_hints()
     main_prompt()
 
-fname = '.\\.hinthelper.p'
 hints = []
+if platform.system() == 'Windows':
+    fname = '.\\.hinthelper.p'
+
+else:
+    fname = './.hinthelper.p'
 
 getch = _Getch()
 init()
