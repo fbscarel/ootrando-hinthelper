@@ -1,270 +1,219 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, pickle, platform, string, sys
-from colorama import init, Fore, Style
+import os, pickle, platform, re, string, sys
+from colorama import init, Fore, Back, Style
+from getkey import getkey, keys
 
 # songs
 songs = [
-    'Bolero',
-    'Eponas',
-    'Minuet',
-    'Nocturne',
-    'Prelude',
-    'Requiem',
-    'Sarias',
-    'Serenade',
-    'Storms',
-    'Song of Time',
-    'Suns Song',
-    'Zeldas Lullaby']
+    "Bolero of Fire",
+    "Epona's Song",
+    "Minuet of Forest",
+    "Nocturne of Shadow",
+    "Prelude of Light",
+    "Requiem of Spirit",
+    "Saria's Song",
+    "Serenade of Water",
+    "Song of Storms",
+    "Song of Time",
+    "Sun's Song",
+    "Zelda's Lullaby"]
 
 # SONG checks
 song_checks = [
-    'Bolero Check',
-    'Burning Kak',
-    'Minuet Check',
-    'OoT Check',
-    'Prelude Check',
-    'Requiem Check',
-    'Serenade Check',
-    'Suns Song Check']
+    "Bolero Check",
+    "Burning Kak",
+    "Minuet Check",
+    "OoT Check",
+    "Prelude Check",
+    "Requiem Check",
+    "Serenade Check",
+    "Sun's Song Check"]
 
 # core items
 items = [
-    'Bomb Bag',
-    'Boomerang',
-    'Boss Key',
-    'Bow',
-    'Claim Check',
-    'Dins Fire',
-    'Divers',
-    'Farores Wind',
-    'Fire Arrows',
-    'Hammer',
-    'Hover Boots',
-    'Iron Boots',
-    'Lens of Truth',
-    'Light Arrows',
-    'Magic',
-    'Mirror Shield',
-    'Hookshot',
-    'Slingshot',
-    'STR Upgrade',
-    'Wallet']
+    "Biggoron's Sword",
+    "Bomb Bag",
+    "Bombchus",
+    "Boomerang",
+    "Boss Key",
+    "Bottle",
+    "Bottle with Big Poe",
+    "Bow",
+    "Claim Check",
+    "Deku Nut Capacity",
+    "Deku Stick Capacity",
+    "Din's Fire",
+    "Double Defense",
+    "Farore's Wind",
+    "Fire Arrows",
+    "Goron Tunic",
+    "Hover Boots",
+    "Iron Boots",
+    "Kokiri Sword",
+    "Lens of Truth",
+    "Light Arrows",
+    "Magic Meter",
+    "Megaton Hammer",
+    "Mirror Shield",
+    "Progressive Hookshot",
+    "Progressive Scale",
+    "Progressive Strength Upgrade",
+    "Progressive Wallet",
+    "Ruto's Letter",
+    "Slingshot",
+    "Small Key",
+    "Zora Tunic"]
 
-# list of checklists, full
-check_list_full = [
-    'Always',
-    'Bean',
-    'Boss',
-    'Dungeon Names',
-    'Dungeon Special',
-    'Minigame',
-    'Overworld',
-    'Places']
-
-# list of checklists, small
-check_list_small = [
-    'Dungeon Names',
-    'Places']
-
-# ALWAYS checks
-always_checks = [
-    '10 Big Poes',
-    '30 Gold Skulltulas',
-    '40 Gold Skulltulas',
-    '50 Gold Skulltulas',
-    'Biggoron',
-    'DT Skull Mask',
-    'Frogs 2']
-
-# MINIGAME checks
-minigame_checks = [
-    'Adult Fishing',
-    'Adult Shooting Gallery',
-    'Bombchu Bowling Bomb Bag',
-    'Bombchu Bowling Piece of Heart',
-    'Child Fishing',
-    'Child Shooting Gallery',
-    'Horseback Archery 1500 Points',
-    'Treasure Chest Game']
-
-# OVERWORLD checks
-overworld_checks = [
-    '20 Gold Skulltulas',
-    'Composer Grave Chest',
-    'Darunias Joy',
-    'Gerudo Valley Hammer Rocks Chest',
-    'Goron City Left Maze Chest',
-    'Goron City Pot',
-    'Shoot the Sun',
-    'Skull Kid',
-    'Suns Song Check Chest',
-    'Unfreeze King Zora',
-    'Wasteland Chest',
-    'Zoras Fountain Ice Lake']
-
-# DUNGEON checks
-dungeon_checks = [
-    'BotW Dead Hand',
-    'Colossus Left Side (Adult)',
-    'Colossus Right Side (Kid)',
-    'FireT Megaton Hammer Chest',
-    'FireT Scarecrow Chest',
-    'ForestT Floormaster Chest',
-    'GTG Final Chest',
-    'GTG Toilet Chest',
-    'ShadowT Floormaster Chest',
-    'WaterT Boss Key Chest',
-    'WaterT River Chest']
-
-# DUNGEONNAME checks
-dungeon_name_checks = [
-    'Bottom of the Well',
-    'Deku Tree',
-    'Dodongos Cavern',
-    'Fire Temple',
-    'Forest Temple',
-    'Ganons Castle',
-    'GTG',
-    'Ice Cavern',
-    'Jabu Jabu',
-    'Shadow Temple',
-    'Spirit Temple',
-    'Water Temple']
-
-# BOSS checks
-boss_checks = [
-    'Barinade',
-    'Bongo Bongo',
-    'Gohma',
-    'King Dodongo',
-    'Morpha',
-    'Phantom Ganon',
-    'Twinrova',
-    'Volvagia']
-
-# BEAN checks
-bean_checks = [
-    'Bean at Crater',
-    'Bean at Desert',
-    'Bean at Graveyard']
-
-# PLACE checks
-place_checks = [
-    'Desert Colossus',
-    'DM Crater',
-    'DM Trail',
-    'Gerudo Fortress',
-    'Gerudo Valley',
-    'Goron City',
-    'Graveyard',
-    'Haunted Wasteland',
-    'Hyrule Castle',
-    'Hyrule Field',
-    'Kakariko',
-    'Kokiri Forest',
-    'Lake Hylia',
-    'Lon Lon Ranch',
-    'Lost Woods',
-    'Market',
-    'Sacred Forest Meadow',
-    'Zora Domain',
-    'Zora Fountain',
-    'Zora River']
-
-class _Getch:
-    def __init__(self):
-        try:
-            self.impl = _GetchWindows()
-        except ImportError:
-            self.impl = _GetchUnix()
-
-    def __call__(self): return self.impl()
-
-class _GetchUnix:
-    def __init__(self):
-        import tty, sys
-
-    def __call__(self):
-        import sys, tty, termios
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-class _GetchWindows:
-    def __init__(self):
-        import msvcrt
-
-    def __call__(self):
-        import msvcrt
-        return msvcrt.getch()
+# list of checks, full
+full_checks = [
+    "10 Big Poes",
+    "20 Gold Skulltulas",
+    "30 Gold Skulltulas",
+    "40 Gold Skulltulas",
+    "50 Gold Skulltulas",
+    "Adult Fishing",
+    "Adult Shooting Gallery",
+    "Barinade",
+    "Bean at Crater",
+    "Bean at Desert",
+    "Bean at Graveyard",
+    "Biggoron",
+    "Bombchu Bowling Bomb Bag",
+    "Bombchu Bowling Piece of Heart",
+    "Bongo Bongo",
+    "Bottom of the Well",
+    "BotW Dead Hand",
+    "Child Fishing",
+    "Child Shooting Gallery",
+    "Colossus Left Side (Adult)",
+    "Colossus Right Side (Kid)",
+    "Composer Grave Chest",
+    "Darunia's Joy",
+    "Deku Tree",
+    "Desert Colossus",
+    "Death Mountain Crater",
+    "Death Mountain Trail",
+    "Dodongo's Cavern",
+    "Deku Theater Skull Mask",
+    "Fire Temple",
+    "Fire Temple Megaton Hammer Chest",
+    "Fire Temple Pierre Chest",
+    "Forest Temple",
+    "Forest Temple Floormaster Chest",
+    "Frogs 2",
+    "Ganon's Castle",
+    "Gerudo Fortress",
+    "Gerudo Valley",
+    "Gerudo Valley Hammer Rocks Chest",
+    "Gohma",
+    "Goron City",
+    "Goron City Left Maze Chest",
+    "Goron City Pot",
+    "Graveyard",
+    "GTG",
+    "GTG Final Chest",
+    "GTG Toilet Chest",
+    "GTG Sunken Silver Rupees Chest",
+    "Haunted Wasteland",
+    "Horseback Archery 1500 Points",
+    "Hyrule Castle",
+    "Hyrule Field",
+    "Ice Cavern",
+    "Icy Waters",
+    "Jabu Jabu",
+    "Kakariko Village",
+    "King Dodongo",
+    "Kokiri Forest",
+    "Lake Hylia",
+    "Lon Lon Ranch",
+    "Lost Woods",
+    "Market",
+    "Morpha",
+    "Phantom Ganon",
+    "Sacred Forest Meadow",
+    "Shadow Temple",
+    "ShadowT Floormaster Chest",
+    "Shoot the Sun",
+    "Skull Kid",
+    "Spirit Temple",
+    "Sun's Song Check Chest",
+    "Temple of Time",
+    "Treasure Chest Game",
+    "Twinrova",
+    "Unfreeze King Zora",
+    "Volvagia",
+    "Wasteland Chest",
+    "Water Temple",
+    "Water Temple Gilded Chest",
+    "Water Temple River Chest",
+    "Zora's Domain",
+    "Zora's Fountain",
+    "Zora's River",
+    "Zora's Fountain Ice Lake"]
 
 def pc(text, color):
-    op = {'b': Fore.BLACK,
-          'r': Fore.RED,
-          'g': Fore.GREEN,
-          'y': Fore.YELLOW,
-          'u': Fore.BLUE,
-          'm': Fore.MAGENTA,
-          'c': Fore.CYAN,
-          'w': Fore.WHITE}
+    op = {"b": Fore.BLACK,
+          "r": Fore.RED,
+          "g": Fore.GREEN,
+          "y": Fore.YELLOW,
+          "u": Fore.BLUE,
+          "m": Fore.MAGENTA,
+          "c": Fore.CYAN,
+          "w": Fore.WHITE}
     return op.get(color) + text + Style.RESET_ALL
+
+def bc(text, color):
+    return Back.BLUE + text + Style.RESET_ALL
 
 def pexit():
     sys.exit()
 
-def itoa(i):
-    return chr(i + 97)
+def askq(plist, question):
+    print("askq")
+    print(plist)
+    s = ""
+    i = 0
+    select = ""
 
-def atoi(c):
-    return ord(c) - 97
+    while True:
+        os.system(clearstr)
 
-def askq(list, question):
-    os.system('cls')
+        r = re.compile(".*" + s + ".*", re.IGNORECASE)
+        nlist = list(filter(r.match, plist))
 
-    for i, c in enumerate(list):
-        print("{}. {}".format(itoa(i), c))
+        print("\nFilter: " + s + '\n')
+        for x, y in enumerate(nlist):
+            if x == i:
+                print(Back.YELLOW + y + Style.RESET_ALL)
+            else:
+                print(y)
 
-    print('\n' + question + ' ', end='')
-    return atoi(getch().decode('ascii'))
-
-def get_check(type):
-    if type == 'small':
-        cln = check_list_small
-        cl = [dungeon_name_checks,
-              place_checks]
-    else:
-        cln = check_list_full
-        cl = [always_checks,
-              bean_checks,
-              boss_checks,
-              dungeon_name_checks,
-              dungeon_checks,
-              minigame_checks,
-              overworld_checks,
-              place_checks]
-
-    t = askq(cln, 'Category?')
-    c = askq(cl[int(t)], 'Check?')
-
-    return cl[int(t)][int(c)]
+        c = getkey()
+        if c == keys.BACKSPACE or c == keys.DELETE:
+            s = s[:-1]
+        elif c == keys.UP and i > 0:
+            i -= 1
+        elif c == keys.DOWN and i < len(nlist) - 1:
+            i += 1
+        elif c.isalnum():
+            s = s + c
+            i = 0
+        elif c == keys.ENTER:
+            return nlist[i]
+        else:
+            pass
 
 def ghint(ct, clt):
     global hints
 
-    if ct == 'item':
-        s = askq(items, 'Item?')
-    c = get_check(clt)
+    if ct == "item":
+        s = askq(items, "Item?")
+    c = askq(full_checks, "Check?")
 
-    if ct == 'item':
-        hints.append(['item', items[s], c])
+    if ct == "item":
+        hints.append(["item", s, c])
     else:
         hints.append([ct, c])
 
@@ -272,24 +221,24 @@ def ghint(ct, clt):
 
 def song_hint():
     global hints
+    print("songhint")
+    s = askq(songs, "Song?")
+    c = askq(song_checks, "Check?")
 
-    s = askq(songs, 'Song?')
-    c = askq(song_checks, 'Check?')
-
-    hints.append(['song', songs[s], song_checks[c]])
+    hints.append(["song", s, c])
     main_loop()
 
 def item_hint():
-    ghint('item', 'full')
+    ghint("item", "full")
 
 def dead_hint():
-    ghint('dead', 'full')
+    ghint("dead", "full")
 
 def woth_hint():
-    ghint('woth', 'small')
+    ghint("woth", "small")
 
 def fool_hint():
-    ghint('fool', 'small')
+    ghint("fool", "small")
 
 def phint(type, text, check):
     global hints
@@ -297,13 +246,13 @@ def phint(type, text, check):
     r = [e for e in hints if e[0] == type]
 
     if len(r) > 0:
-        print('\n' + text)
+        print("\n" + text)
 
     for h in r:
         if check == True:
-            print('\t' + h[1] + pc(' is at ','m') + h[2])
+            print("\t" + h[1] + pc(" is at ","m") + h[2])
         else:
-            print('\t' + h[1])
+            print("\t" + h[1])
 
 def undo_hint():
     global hints
@@ -320,35 +269,37 @@ def kill_hint():
 def loadf():
     global fname, hints
     if os.path.isfile(fname) and os.stat(fname).st_size != 0:
-        f = open(fname, 'rb')
+        f = open(fname, "rb")
         hints = pickle.load(f)
         f.close()
 
 def writef():
     global fname, hints
-    f = open(fname, 'wb')
+    f = open(fname, "wb")
     pickle.dump(hints, f)
 
 def main_hints():
-    phint('woth', pc('Way of the Hero:', 'y'), False)
-    phint('fool', pc('Barren Locations:', 'r'), False)
-    phint('song', pc('Songs:', 'g'), True)
-    phint('item', pc('Items:', 'c'), True)
-    phint('dead', pc('Dead Checks:', 'u'), False)
+    phint("woth", pc("Way of the Hero:", "y"), False)
+    phint("fool", pc("Barren Locations:", "r"), False)
+    phint("song", pc("Songs:", "g"), True)
+    phint("item", pc("Items:", "c"), True)
+    phint("dead", pc("Dead Checks:", "u"), False)
 
 def main_prompt():
-    op = {'s': song_hint,
-          'i': item_hint,
-          'd': dead_hint,
-          'w': woth_hint,
-          'f': fool_hint,
-          'u': undo_hint,
-          'k': kill_hint,
-          'e': pexit}
+    op = {"s": song_hint,
+          "i": item_hint,
+          "d": dead_hint,
+          "w": woth_hint,
+          "f": fool_hint,
+          "u": undo_hint,
+          "k": kill_hint,
+          "e": pexit}
 
-    print('\n=====================================================================')
-    print('\n' + pc('(W)','y') + 'oth | ' + pc('(F)','r') + 'ool | ' + pc('(S)','g') + 'ong | ' + pc('(I)','c') + 'tem | ' + pc('(D)','u') + 'ead | ' + pc('(U)','m') + 'ndo | ' + pc('(K)','m') + 'ill | ' + pc('(E)','w') + 'xit ', end='')
-    c = getch().decode('ascii')
+    print("\n=====================================================================")
+    print("\n" + pc("(W)","y") + "oth | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead | " + pc("(U)","m") + "ndo | " + pc("(K)","m") + "ill | " + pc("(E)","w") + "xit ", end="")
+    c = getkey()
+    print(c)
+    op[c.lower()]()
     try:
         op[c.lower()]()
     except SystemExit:
@@ -359,18 +310,19 @@ def main_prompt():
         main_loop()
 
 def main_loop():
-    os.system('cls')
+    os.system(clearstr)
     main_hints()
     main_prompt()
 
 hints = []
-if platform.system() == 'Windows':
-    fname = '.\\.hinthelper.p'
+if platform.system() == "Windows":
+    fname = ".\\.hinthelper.p"
+    clearstr = "cls"
 
 else:
-    fname = './.hinthelper.p'
+    fname = "./.hinthelper.p"
+    clearstr = "clear"
 
-getch = _Getch()
 init()
 loadf()
 
