@@ -4,6 +4,7 @@
 import os, pickle, platform, re, string, sys
 from colorama import init, Fore, Back, Style
 from getkey import getkey, keys
+from operator import itemgetter
 
 # songs
 songs = [
@@ -134,7 +135,7 @@ full_checks = [
     "Phantom Ganon",
     "Sacred Forest Meadow",
     "Shadow Temple",
-    "ShadowT Floormaster Chest",
+    "Shadow Temple Floormaster Chest",
     "Shoot the Sun",
     "Skull Kid",
     "Spirit Temple",
@@ -165,17 +166,14 @@ def pc(text, color):
     return op.get(color) + text + Style.RESET_ALL
 
 def bc(text, color):
-    return Back.BLUE + text + Style.RESET_ALL
+    return Back.YELLOW + text + Style.RESET_ALL
 
 def pexit():
     sys.exit()
 
 def askq(plist, question):
-    print("askq")
-    print(plist)
     s = ""
-    i = 0
-    select = ""
+    i = 0    
 
     while True:
         os.system(clearstr)
@@ -183,12 +181,22 @@ def askq(plist, question):
         r = re.compile(".*" + s + ".*", re.IGNORECASE)
         nlist = list(filter(r.match, plist))
 
-        print("\nFilter: " + s + '\n')
-        for x, y in enumerate(nlist):
-            if x == i:
-                print(Back.YELLOW + y + Style.RESET_ALL)
-            else:
-                print(y)
+        print(question + "\n")
+
+        if len(s) > 0:
+            for x, y in enumerate(nlist):
+                if x == i:
+                    print(bc(y, "y"))
+                else:
+                    print(y)
+
+        print("\n=====================================================")
+
+        if len(s) > 0:
+            print(pc("\n[UP and DOWN to scroll through list, ENTER to select]", "b"), end="")
+            print(pc("\nFilter: ", "u") + s, end="")
+        else:
+            print(pc("\nFilter: ", "u") + "[Type at least one letter to search]", end="")
 
         c = getkey()
         if c == keys.BACKSPACE or c == keys.DELETE:
@@ -209,8 +217,8 @@ def ghint(ct, clt):
     global hints
 
     if ct == "item":
-        s = askq(items, "Item?")
-    c = askq(full_checks, "Check?")
+        s = askq(items, pc("Item?", "c"))
+    c = askq(full_checks, pc("Check Location?", "r"))
 
     if ct == "item":
         hints.append(["item", s, c])
@@ -222,8 +230,8 @@ def ghint(ct, clt):
 def song_hint():
     global hints
     print("songhint")
-    s = askq(songs, "Song?")
-    c = askq(song_checks, "Check?")
+    s = askq(songs, pc("Song?", "g"))
+    c = askq(song_checks, pc("Song Check?", "r"))
 
     hints.append(["song", s, c])
     main_loop()
@@ -248,15 +256,17 @@ def phint(type, text, check):
     if len(r) > 0:
         print("\n" + text)
 
-    for h in r:
-        if check == True:
-            print("\t" + h[1] + pc(" is at ","m") + h[2])
-        else:
-            print("\t" + h[1])
+        r = sorted(r, key=itemgetter(1))
+        for h in r:
+            if check == True:
+                print("\t" + h[1] + pc(" is at ","m") + h[2])
+            else:
+                print("\t" + h[1])
 
 def undo_hint():
     global hints
 
+    print(hints[-1])
     del hints[-1]
     main_loop()
 
@@ -298,8 +308,6 @@ def main_prompt():
     print("\n=====================================================================")
     print("\n" + pc("(W)","y") + "oth | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead | " + pc("(U)","m") + "ndo | " + pc("(K)","m") + "ill | " + pc("(E)","w") + "xit ", end="")
     c = getkey()
-    print(c)
-    op[c.lower()]()
     try:
         op[c.lower()]()
     except SystemExit:
