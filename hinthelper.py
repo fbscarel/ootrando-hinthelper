@@ -154,6 +154,13 @@ full_checks = [
     "Zora's River",
     "Zora's Fountain Ice Lake"]
 
+def question(type):
+    q = {"item": pc("Item?", "c"),
+         "location": pc("Check Location?", "r"),
+         "song": pc("Song?", "g"),
+         "song_check": pc("Song Check?", "r")}
+    return q.get(type)
+
 def pc(text, color):
     op = {"b": Fore.BLACK,
           "r": Fore.RED,
@@ -171,9 +178,19 @@ def bc(text, color):
 def pexit():
     sys.exit()
 
-def askq(plist, question):
+def askq(olist, qt, ct):
+    global hints
+    plist = olist[:]
     s = ""
-    i = 0    
+    i = 0   
+
+    r = [e for e in hints if e[0] == ct]
+    if len(r) > 0:
+        for h in r:
+            if qt == "song_check":
+                if h[2] in plist: plist.remove(h[2])
+            else:
+                if h[1] in plist: plist.remove(h[1])
 
     while True:
         os.system(clearstr)
@@ -181,7 +198,7 @@ def askq(plist, question):
         r = re.compile(".*" + s + ".*", re.IGNORECASE)
         nlist = list(filter(r.match, plist))
 
-        print(question + "\n")
+        print(question(qt) + "\n")
 
         if len(s) > 0:
             for x, y in enumerate(nlist):
@@ -190,13 +207,13 @@ def askq(plist, question):
                 else:
                     print(y)
 
-        print("\n=====================================================")
+        print("\n====================================================================")
 
         if len(s) > 0:
-            print(pc("\n[UP and DOWN to scroll through list, ENTER to select]", "b"), end="")
+            print(pc("\n[UP and DOWN to scroll through list, ENTER to select, ESC to cancel]", "b"), end="")
             print(pc("\nFilter: ", "u") + s, end="")
         else:
-            print(pc("\nFilter: ", "u") + "[Type at least one letter to search]", end="")
+            print(pc("\nFilter: ", "u") + "[Type at least one letter to search, ESC to cancel]", end="")
 
         c = getkey()
         if c == keys.BACKSPACE or c == keys.DELETE:
@@ -205,11 +222,13 @@ def askq(plist, question):
             i -= 1
         elif c == keys.DOWN and i < len(nlist) - 1:
             i += 1
+        elif c == keys.ENTER:
+            return nlist[i]
+        elif c == keys.ESC:
+            raise Exception('Break out')
         elif c.isalnum():
             s = s + c
             i = 0
-        elif c == keys.ENTER:
-            return nlist[i]
         else:
             pass
 
@@ -217,8 +236,8 @@ def ghint(ct, clt):
     global hints
 
     if ct == "item":
-        s = askq(items, pc("Item?", "c"))
-    c = askq(full_checks, pc("Check Location?", "r"))
+        s = askq(items, "item", ct)
+    c = askq(full_checks, "location", ct)
 
     if ct == "item":
         hints.append(["item", s, c])
@@ -230,8 +249,8 @@ def ghint(ct, clt):
 def song_hint():
     global hints
     print("songhint")
-    s = askq(songs, pc("Song?", "g"))
-    c = askq(song_checks, pc("Song Check?", "r"))
+    s = askq(songs, "song", "song")
+    c = askq(song_checks, "song_check", "song")
 
     hints.append(["song", s, c])
     main_loop()
