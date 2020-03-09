@@ -1,1 +1,5 @@
 .hinthelper.p
+__pycache__/
+build/
+dist/
+hinthelper.spec

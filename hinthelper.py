@@ -67,6 +67,25 @@ items = [
     "Small Key",
     "Zora Tunic"]
 
+# repeatable items
+repeatables = [
+    "Bomb Bag",
+    "Bombchus",
+    "Boss Key",
+    "Bottle",
+    "Bow",
+    "Deku Nut Capacity",
+    "Deku Stick Capacity",
+    "Goron Tunic",
+    "Magic Meter",
+    "Progressive Hookshot",
+    "Progressive Scale",
+    "Progressive Strength Upgrade",
+    "Progressive Wallet",
+    "Slingshot",
+    "Small Key",
+    "Zora Tunic"]
+
 # list of checks, full
 full_checks = [
     "10 Big Poes",
@@ -76,6 +95,7 @@ full_checks = [
     "50 Gold Skulltulas",
     "Adult Fishing",
     "Adult Shooting Gallery",
+    "Anjus Chickens",
     "Barinade",
     "Bean at Crater",
     "Bean at Desert",
@@ -84,6 +104,7 @@ full_checks = [
     "Bombchu Bowling Bomb Bag",
     "Bombchu Bowling Piece of Heart",
     "Bongo Bongo",
+    "Boomerang Chest",
     "Bottom of the Well",
     "BotW Dead Hand",
     "Child Fishing",
@@ -154,11 +175,86 @@ full_checks = [
     "Zora's River",
     "Zora's Fountain Ice Lake"]
 
+# shops
+shops = [
+    "Goron City Shop",
+    "Kakariko Left Shop",
+    "Kakariko Right Shop",
+    "Kokiri Shop",
+    "Market Left Shop",
+    "Market Night Shop",
+    "Market Right Shop",
+    "Zora's Domain Shop"]
+
+# scrubs
+scrubs = [
+    "Crater, near fairy fountain                 (1) [Nothing, Child]",
+    "Crater, red rock near Goron City entrance   (3) [Hammer, Adult]",
+    "Desert Colossus, silver rock near warp pad  (2) [Silvers, Adult]",
+    "Dodongo's Cavern, after Lizalfo fight       (1) [Dungeon]",
+    "Dodongo's Cavern, left side near entrance   (1) [Dungeon]",
+    "Dodongo's Cavern, near Bomb Bag chest       (2) [Dungeon]",
+    "Ganon's Castle, invisible wall under bridge (4) [Dungeon]",
+    "Gerudo Valley, near carpenter's tent        (2) [SoS, Both]",
+    "Goron City, past the lava room              (3) [Hookshot + Goron Tunic OR SoT, Adult]",
+    "Hyrule Field, southern grotto               (1) [Bombs, Both]",
+    "Jabu Jabu, diving behind the elevator       (1) [Dungeon]",
+    "Lake Hylia, under gravestone                (3) [Nothing, Both]",
+    "Lon Lon Ranch, southeast open grotto        (3) [Nothing, Child]",
+    "Lost Woods, grotto near SFM                 (2) [Bombs, Both]",
+    "Lost Woods, near bridge                     (1) [Nothing, Child]",
+    "Lost Woods, near mask theater               (2) [Nothing, Child]",
+    "Sacred Forest Meadow, grotto near warp pad  (2) [SoS, Both]",
+    "Zora's River, grotto near entrance rocks    (2) [SoS, Both]"]
+
+# cows
+cows = [
+    "DM Trail, bombable grotto near climb start       (1) [Bombs, Both]",
+    "Gerudo Valley, bottom platform near waterfall    (1) [Nothing, Child]",
+    "Hyrule Field, bombable grotto near Gerudo Valley (1) [Bombs/Hammer + Fire source, Both]",
+    "Kakariko, inside Impa's House                    (1) [Nothing, Both]",
+    "Kokiri Forest, inside Link's House               (1) [Epona, Adult]",
+    "Lon Lon Ranch, back silo                         (2) [Nothing, Both]",
+    "Lon Lon Ranch, right side door from entrance     (2) [Nothing, Both]"]
+
+# entrances
+entrances = [
+    "Deku Tree",
+    "Dodongo's Cavern",
+    "Jabu Jabu",
+    "Forest Temple",
+    "Fire Temple",
+    "Water Temple",
+    "Shadow Temple",
+    "Spirit Temple",
+    "Bottom of the Well",
+    "Ice Cavern",
+    "Gerudo Training Grounds"]
+
+# dungeons
+dungeons = [
+    "Deku Tree",
+    "Dodongo's Cavern",
+    "Jabu Jabu",
+    "Forest Temple",
+    "Fire Temple",
+    "Water Temple",
+    "Shadow Temple",
+    "Spirit Temple",
+    "Bottom of the Well",
+    "Ice Cavern",
+    "Gerudo Training Grounds"]
+
 def question(type):
     q = {"item": pc("Item?", "c"),
          "location": pc("Check Location?", "r"),
          "song": pc("Song?", "g"),
-         "song_check": pc("Song Check?", "r")}
+         "song_check": pc("Song Check?", "r"),
+         "shop": pc("Shop?", "m"),
+         "dungeon": pc("Dungeon?", "m"),
+         "entrance": pc("Entrance?", "m"),
+         "cow": pc("Remaining Cow checks:", "m"),
+         "scrub": pc("Remaining Scrub checks:", "m")}
     return q.get(type)
 
 def pc(text, color):
@@ -173,7 +269,7 @@ def pc(text, color):
     return op.get(color) + text + Style.RESET_ALL
 
 def bc(text, color):
-    return Back.YELLOW + text + Style.RESET_ALL
+    return Back.CYAN + text + Style.RESET_ALL
 
 def pexit():
     sys.exit()
@@ -182,15 +278,16 @@ def askq(olist, qt, ct):
     global hints
     plist = olist[:]
     s = ""
-    i = 0   
+    i = 0
 
     r = [e for e in hints if e[0] == ct]
     if len(r) > 0:
         for h in r:
-            if qt == "song_check":
+            if qt == "song_check" or qt == "entrance":
                 if h[2] in plist: plist.remove(h[2])
             else:
-                if h[1] in plist: plist.remove(h[1])
+                if h[1] in plist and h[1] not in repeatables:
+                    plist.remove(h[1])
 
     while True:
         os.system(clearstr)
@@ -200,7 +297,7 @@ def askq(olist, qt, ct):
 
         print(question(qt) + "\n")
 
-        if len(s) > 0:
+        if len(s) >= 0:
             for x, y in enumerate(nlist):
                 if x == i:
                     print(bc(y, "y"))
@@ -210,17 +307,28 @@ def askq(olist, qt, ct):
         print("\n====================================================================")
 
         if len(s) > 0:
-            print(pc("\n[UP and DOWN to scroll through list, ENTER to select, ESC to cancel]", "b"), end="")
-            print(pc("\nFilter: ", "u") + s, end="")
+            if olist == cow_checks or olist == scrub_checks:
+                #print(pc("\n[UP and DOWN to scroll through list, ENTER to mark check as done, ESC to cancel]", "c"), end="")
+                print(pc("\n['<' and '>' to scroll through list, ENTER to mark check as done, ESC to cancel]", "c"), end="")
+                print(pc("\nFilter: ", "u") + s, end="")
+            else:
+                #print(pc("\n[UP and DOWN to scroll through list, ENTER to select, ESC to cancel]", "c"), end="")
+                print(pc("\n['<' and '>' to scroll through list, ENTER to select, ESC to cancel]", "c"), end="")
+                print(pc("\nFilter: ", "u") + s, end="")
         else:
-            print(pc("\nFilter: ", "u") + "[Type at least one letter to search, ESC to cancel]", end="")
+            if olist == cow_checks or olist == scrub_checks:
+                print(pc("\nFilter: ", "u") + "[Type at least one letter to search, ENTER to mark check as done, ESC to cancel]", end="")
+            else:
+                print(pc("\nFilter: ", "u") + "[Type at least one letter to search, ESC to cancel]", end="")
 
         c = getkey()
         if c == keys.BACKSPACE or c == keys.DELETE:
             s = s[:-1]
-        elif c == keys.UP and i > 0:
+        #elif c == keys.UP and i > 0:
+        elif (c == keys.ANGLE or c == keys.TAIL) and i > 0:
             i -= 1
-        elif c == keys.DOWN and i < len(nlist) - 1:
+        #elif c == keys.DOWN and i < len(nlist) - 1:
+        elif (c == keys.RIGHT_ANGLE or c == keys.SPOT) and i < len(nlist) - 1:
             i += 1
         elif c == keys.ENTER:
             return nlist[i]
@@ -232,15 +340,34 @@ def askq(olist, qt, ct):
         else:
             pass
 
-def ghint(ct, clt):
+def ghint(ct):
     global hints
+    global cow_checks
+    global scrub_checks
 
-    if ct == "item":
+    if ct == "item" or ct == "shop":
         s = askq(items, "item", ct)
-    c = askq(full_checks, "location", ct)
 
-    if ct == "item":
-        hints.append(["item", s, c])
+    if ct == "shop":
+        c = askq(shops, "shop", ct)
+        os.system(clearstr)
+        print(pc("\nPrice? ", "u"), end="")
+        p = input()
+    elif ct == "cows":
+        c = askq(cow_checks, "cow", ct)
+    elif ct == "scrubs":
+        c = askq(scrub_checks, "scrub", ct)
+    else:
+        c = askq(full_checks, "location", ct)
+
+    if ct == "shop":
+        hints.append([ct, s, c, p])
+    elif ct == "item":
+        hints.append([ct, s, c])
+    elif ct == "cows":
+        cow_checks.remove(c)
+    elif ct == "scrubs":
+        scrub_checks.remove(c)
     else:
         hints.append([ct, c])
 
@@ -248,24 +375,40 @@ def ghint(ct, clt):
 
 def song_hint():
     global hints
-    print("songhint")
     s = askq(songs, "song", "song")
     c = askq(song_checks, "song_check", "song")
 
     hints.append(["song", s, c])
     main_loop()
 
+def entrance_sanity():
+    global hints
+    s = askq(dungeons, "dungeon", "entrance")
+    c = askq(entrances, "entrance", "entrance")
+
+    hints.append(["entrance", s, c])
+    main_loop()
+
 def item_hint():
-    ghint("item", "full")
+    ghint("item")
 
 def dead_hint():
-    ghint("dead", "full")
+    ghint("dead")
 
 def woth_hint():
-    ghint("woth", "small")
+    ghint("woth")
 
 def fool_hint():
-    ghint("fool", "small")
+    ghint("fool")
+
+def shop_sanity():
+    ghint("shop")
+
+def cow_sanity():
+    ghint("cows")
+
+def scrub_sanity():
+    ghint("scrubs")
 
 def phint(type, text, check):
     global hints
@@ -277,7 +420,9 @@ def phint(type, text, check):
 
         r = sorted(r, key=itemgetter(1))
         for h in r:
-            if check == True:
+            if check == "shop":
+                print("\t" + h[1] + pc(" is at ","m") + h[2] + pc(" for ","m") + h[3] + pc(" rupees","m"))
+            elif check == "long":
                 print("\t" + h[1] + pc(" is at ","m") + h[2])
             else:
                 print("\t" + h[1])
@@ -308,11 +453,13 @@ def writef():
     pickle.dump(hints, f)
 
 def main_hints():
-    phint("woth", pc("Way of the Hero:", "y"), False)
-    phint("fool", pc("Barren Locations:", "r"), False)
-    phint("song", pc("Songs:", "g"), True)
-    phint("item", pc("Items:", "c"), True)
-    phint("dead", pc("Dead Checks:", "u"), False)
+    phint("woth", pc("Way of the Hero:", "y"), "short")
+    phint("fool", pc("Barren Locations:", "r"), "short")
+    phint("song", pc("Songs:", "g"), "long")
+    phint("item", pc("Items:", "c"), "long")
+    phint("dead", pc("Dead Checks:", "u"), "short")
+    phint("shop", pc("Shop Items:", "m"), "shop")
+    phint("entrance", pc("Entrances:", "m"), "long")
 
 def main_prompt():
     op = {"s": song_hint,
@@ -322,10 +469,16 @@ def main_prompt():
           "f": fool_hint,
           "u": undo_hint,
           "k": kill_hint,
+          "h": shop_sanity,
+          "t": entrance_sanity,
+          "c": cow_sanity,
+          "r": scrub_sanity,
           "e": pexit}
 
     print("\n=====================================================================")
-    print("\n" + pc("(W)","y") + "oth | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead | " + pc("(U)","m") + "ndo | " + pc("(K)","m") + "ill | " + pc("(E)","w") + "xit ", end="")
+    print("\n" + pc("(W)","y") + "oth | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead")
+    print("\n" + "s" + pc("(H)","m") + "ops | " + pc("(C)","m") + "ows | " + "sc" + pc("(R)","m") + "ubs | " + "en" + pc("(T)","m") + "trances")
+    print("\n" + pc("(U)","w") + "ndo | " + pc("(K)","w") + "ill | " + pc("(E)","w") + "xit ", end="")
     c = getkey()
     try:
         op[c.lower()]()
@@ -352,5 +505,11 @@ else:
 
 init()
 loadf()
+
+global cow_checks
+cow_checks = cows[:]
+
+global scrub_checks
+scrub_checks = scrubs[:]
 
 main_loop()
