@@ -1,0 +1,102 @@
+[
+	{
+		"Name" : "Graveyard Box with Boomerang",
+		"Requirements": "Boomerang",
+		"Description": "Target fence\nLedge grab, climb back\nTurn 90 degrees right\nAlign top-left of Link's hat with windmill ceiling\nShoot Boomerang, 2x sidehop right, 2x backflip"
+	},
+  {
+    "Name": "Zora's Domain entry with Hover Boots",
+    "Requirements": "Hover Boots",
+    "Description": "After coming from LW pond, 1st person aim in-between two dark patches on wall\nRoll 2x forward with Hovers equipped"
+  },
+  {
+    "Name": "Zora's River upper standing PoH with nothing",
+    "Requirements": "Nothing",
+    "Description": "Target wall next to jump ledge to Domain\n1x backflip, 1x sidehop left, 1x neutral roll, retarget\n1x neutral roll, ledge grab\nClimb, retarget, 1x neutral roll\nHold stick back"
+  },
+  {
+    "Name": "Water Temple gainer jump (2F key)",
+    "Requirements": "Nothing",
+    "Description": "Target wooden pillar facing water, turn around\n1x sidehop right, 1x neutral roll, retarget\n1x backflip, 1x neutral roll, 1x sidehop left\nShield turn 90 degrees right\nHold target, pause, let go of target, hold left, spam A, unpause\nRetarget wall during fall, keep spamming A"
+  },
+  {
+    "Name": "Water Temple gainer jump (2F key), easier setup",
+    "Requirements": "Nothing",
+    "Description": "Ledge grab from water at rightmost position\n1x sidehop right, pull ocarina and play ZL\nSword slash + shield\nHold target, pause, let go of target, hold left, spam A, unpause\nRetarget wall during fall, keep spamming A"
+  },
+  {
+    "Name": "Goron City maze leftmost chest with Hover Boots",
+    "Requirements": "Hover Boots",
+    "Description": "Climb on box, target wall, move all the way to the left\n2x sidehop left into the wall\nBackwalk, 1x backflip on the very end of hover animation"
+  },
+  {
+    "Name": "Gerudo Valley crate as Adult Link with Bombchus",
+    "Requirements": "Bombchu",
+    "Description": "Align perpendicularly with canyon on the 3rd dark patch from wall\nShield turn 90 degrees right\n1st person align sword hilt with vertex between canyon walls\nHold Bombchu 1 1/2 flashes above head, let go"
+  },
+  {
+    "Name": "Water Temple Dragon room without Iron Boots",
+    "Requirements": "Bow",
+    "Description": "Line up with wall to your right, shoot Dragon crystal using Bow\nTarget wall, 1x sidehop left, spam B"
+  },
+  {
+    "Name": "Water Temple pixel shot",
+    "Requirements": "Bow",
+    "Description": "Face central pillar wall on 3F right side\nLine up sword hilt with thinnest line in wall right before falling\nPull Bow, turn around and shoot\nJump to 2F"
+  },
+  {
+    "Name": "Shadow Temple statue with Bombchus",
+    "Requirements": "Bombchu",
+    "Description": "Align middle of Link's hat with white line on middle block, 3rd row\n1x backflip, shield turn 90 degrees right\n1x sidehop right, 1x neutral roll, 1x sidehop left, 1x neutral roll, retarget\n1x neutral roll\n1st person aim so that seam in-between 50% magic and sword hilt (or just crossing 10th heart)\nShield drop Bombchu"
+  },
+  {
+    "Name": "Water Temple BK chest with nothing",
+    "Requirements": "Nothing",
+    "Description": "Starting from door, 2x sidehop left, 1x neutral roll, retarget\n2x sidehop right, 1x sidehop left, 1x neutral roll, retarget\n2x sidehop right, jump straight ahead"
+  },
+  {
+    "Name": "Water Temple 3F target with Hookshot",
+    "Requirements": "Hookshot",
+    "Description": "From dungeon entrance, ledge grab, ESS 90 degrees left\n1x front roll, ESS the least amount possible to your right\nSidehop right until you hit a wall, hold target, approach furthest possible point before falling\nHookshot up"
+  },
+  {
+    "Name": "Water Temple 3F water leveler with nothing",
+    "Requirements": "Nothing",
+    "Description": "Kill tektite for safety\nJumping from closest vertex to the ledge, 1st person aim for the right border of Triforce logo on wall\nJump, hold target + shield, jumpslash during glitched animation"
+  },
+  {
+    "Name": "Zora's Domain hover to King Zora",
+    "Requirements": "Hover Boots",
+    "Description": "Climbing ramp, pull out sword, hold target + shield\nEquip Hover Boots and move as close to KZ as you can\nJumpslash during glitched animation"
+  },
+  {
+    "Name": "Fire Temple pixel shot",
+    "Requirements": "Longshot",
+    "Description": "Ledge grab from bombable floor platform, keep line in the middle of Link's legs\n1x neutral roll, shield turn 90 degrees right\n3x sword slash, shield\nLongshot 1 pixel above the place where red dot disappears"
+  },
+  {
+    "Name": "Forest Temple push blocks room backwalk hover setup",
+    "Requirements": "Hover Boots",
+    "Description": "Climb 1st set of stairs, put Hover Boots on, hold target\n1x sidehop right, 1x neutral roll, retarget\nClimb next ladder with target held\nBackwalk, 1x backflip at the end of hover animation"
+  },
+  {
+    "Name": "Fire Temple glitchless block jump",
+    "Requirements": "Nothing",
+    "Description": "Climb block ledge on rightmost spot with sword out\nRight slash + shield, 1x sidehop left\nShield turn 90 degrees right\n1st person align camera so that the middle of chest on minimap goes through far ledge wall\nJump straight ahead, hold up + left"
+  },
+  {
+    "Name": "GTG Hookshotless silver rupee setup",
+    "Requirements": "Nothing",
+    "Description": "Target wall below final rupee standing to the left of fire wall, Link's hat crossing middle line in wall\nTarget, vertical slash, right slash\nSidehop left until you hit wall, shield turn 90 degrees left, 2x crouch stab\nWait"
+  },
+  {
+    "Name": "GTG Hookshotless fire wall skip",
+    "Requirements": "Nothing",
+    "Description": "Target wall to the left of final fire wall, Link's hat crossing line between blocks just above\nShield turn 90 degrees right, 1x sidehop right, 1x neutral roll, retarget\n1x sidehop right, sidehop left until you are past fire wall"
+  },
+  {
+    "Name": "Jabu Jabu fast switch before Barinade",
+    "Requirements": "Boomerang",
+    "Description": "Run up to the pointy end connecting floor and slope\nAim Link's hat just left of where vine in the walls start, pull Boomerang all the way up\nShoot, 3x sidehop left"
+  }
+]

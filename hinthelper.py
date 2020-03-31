@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, pickle, platform, re, string, sys
+import io, os, pickle, platform, re, string, sys, json
 from colorama import init, Fore, Back, Style
 from getkey import getkey, keys
 from operator import itemgetter
@@ -47,6 +47,8 @@ items = [
     "Deku Stick Capacity",
     "Din's Fire",
     "Double Defense",
+    "Eyeball Frog",
+    "Eyedrops",
     "Farore's Wind",
     "Fire Arrows",
     "Goron Tunic",
@@ -58,6 +60,7 @@ items = [
     "Magic Meter",
     "Megaton Hammer",
     "Mirror Shield",
+    "Prescription",
     "Progressive Hookshot",
     "Progressive Scale",
     "Progressive Strength Upgrade",
@@ -65,6 +68,7 @@ items = [
     "Ruto's Letter",
     "Slingshot",
     "Small Key",
+    "Triforce Piece",
     "Zora Tunic"]
 
 # repeatable items
@@ -84,6 +88,7 @@ repeatables = [
     "Progressive Wallet",
     "Slingshot",
     "Small Key",
+    "Triforce Piece",
     "Zora Tunic"]
 
 # list of checks, full
@@ -112,6 +117,7 @@ full_checks = [
     "Colossus Left Side (Adult)",
     "Colossus Right Side (Kid)",
     "Composer Grave Chest",
+    "Anjus Cuccos",
     "Darunia's Joy",
     "Deku Tree",
     "Desert Colossus",
@@ -153,6 +159,7 @@ full_checks = [
     "Lost Woods",
     "Market",
     "Morpha",
+    "Outside Ganon's Castle",
     "Phantom Ganon",
     "Sacred Forest Meadow",
     "Shadow Temple",
@@ -254,7 +261,8 @@ def question(type):
          "dungeon": pc("Dungeon?", "m"),
          "entrance": pc("Entrance?", "m"),
          "cow": pc("Remaining Cow checks:", "m"),
-         "scrub": pc("Remaining Scrub checks:", "m")}
+         "scrub": pc("Remaining Scrub checks:", "m"),
+         "trick": pc("Select trick from list:", "y")}
     return q.get(type)
 
 def pc(text, color):
@@ -308,12 +316,12 @@ def askq(olist, qt, ct):
 
         if len(s) > 0:
             if olist == cow_checks or olist == scrub_checks:
-                #print(pc("\n[UP and DOWN to scroll through list, ENTER to mark check as done, ESC to cancel]", "c"), end="")
-                print(pc("\n['<' and '>' to scroll through list, ENTER to mark check as done, ESC to cancel]", "c"), end="")
+                print(pc("\n[UP and DOWN to scroll through list, ENTER to mark check as done, ESC to cancel]", "c"), end="")
+                #print(pc("\n['<' and '>' to scroll through list, ENTER to mark check as done, ESC to cancel]", "c"), end="")
                 print(pc("\nFilter: ", "u") + s, end="")
             else:
-                #print(pc("\n[UP and DOWN to scroll through list, ENTER to select, ESC to cancel]", "c"), end="")
-                print(pc("\n['<' and '>' to scroll through list, ENTER to select, ESC to cancel]", "c"), end="")
+                print(pc("\n[UP and DOWN to scroll through list, ENTER to select, ESC to cancel]", "c"), end="")
+                #print(pc("\n['<' and '>' to scroll through list, ENTER to select, ESC to cancel]", "c"), end="")
                 print(pc("\nFilter: ", "u") + s, end="")
         else:
             if olist == cow_checks or olist == scrub_checks:
@@ -324,11 +332,11 @@ def askq(olist, qt, ct):
         c = getkey()
         if c == keys.BACKSPACE or c == keys.DELETE:
             s = s[:-1]
-        #elif c == keys.UP and i > 0:
-        elif (c == keys.ANGLE or c == keys.TAIL) and i > 0:
+        elif (c == keys.UP or c == keys.LEFT) and i > 0:
+        #elif (c == keys.ANGLE or c == keys.TAIL) and i > 0:
             i -= 1
-        #elif c == keys.DOWN and i < len(nlist) - 1:
-        elif (c == keys.RIGHT_ANGLE or c == keys.SPOT) and i < len(nlist) - 1:
+        elif (c == keys.DOWN or c == keys.RIGHT) and i < len(nlist) - 1:
+        #elif (c == keys.RIGHT_ANGLE or c == keys.SPOT) and i < len(nlist) - 1:
             i += 1
         elif c == keys.ENTER:
             return nlist[i]
@@ -410,6 +418,27 @@ def cow_sanity():
 def scrub_sanity():
     ghint("scrubs")
 
+def advanced_tricks():
+    c = askq(trick_list, "trick", "trick")
+    for trick in tricks:
+        if trick['Name'] == c:
+            os.system(clearstr)
+            print(pc("\nTrick name: ", "y") + trick['Name'], end="")
+            print(pc("\nRequirements: ", "u") + trick['Requirements'], end="")
+            print("\n\n====================================================================\n")
+            for line in io.StringIO(trick['Description']):
+                print("- " + line)
+            print("\n====================================================================")
+            print(pc("\nPress ANY KEY to return to main menu", "c"), end="")
+            print()
+            while True:
+                c = getkey()
+                if c:
+                    raise Exception('Break out')
+                else:
+                    pass
+    main_loop()
+
 def phint(type, text, check):
     global hints
 
@@ -473,12 +502,13 @@ def main_prompt():
           "t": entrance_sanity,
           "c": cow_sanity,
           "r": scrub_sanity,
+          "a": advanced_tricks,
           "e": pexit}
 
     print("\n=====================================================================")
     print("\n" + pc("(W)","y") + "oth | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead")
-    print("\n" + "s" + pc("(H)","m") + "ops | " + pc("(C)","m") + "ows | " + "sc" + pc("(R)","m") + "ubs | " + "en" + pc("(T)","m") + "trances")
-    print("\n" + pc("(U)","w") + "ndo | " + pc("(K)","w") + "ill | " + pc("(E)","w") + "xit ", end="")
+    print("\n" + "s" + pc("(H)","m") + "ops | " + pc("(C)","m") + "ows | " + "sc" + pc("(R)","m") + "ubs | " + "en" + pc("(T)","m") + "rances")
+    print("\n" + pc("(A)","w") + "dvanced tricks | " + pc("(U)","w") + "ndo | " + pc("(K)","w") + "ill | " + pc("(E)","w") + "xit ", end="")
     c = getkey()
     try:
         op[c.lower()]()
@@ -511,5 +541,15 @@ cow_checks = cows[:]
 
 global scrub_checks
 scrub_checks = scrubs[:]
+
+global trick_list
+trick_list = []
+with open('tricks.json', 'r') as f:
+    tricks = json.load(f)
+
+    for trick in tricks:
+        trick_list.append(trick['Name'])
+
+    trick_list.sort()
 
 main_loop()
