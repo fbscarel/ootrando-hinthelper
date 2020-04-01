@@ -71,6 +71,46 @@ items = [
     "Triforce Piece",
     "Zora Tunic"]
 
+# KEY checks
+kchecks = [
+    "Bolero of Fire",
+    "Epona's Song",
+    "Minuet of Forest",
+    "Nocturne of Shadow",
+    "Requiem of Spirit",
+    "Saria's Song",
+    "Song of Storms",
+    "Song of Time",
+    "Sun's Song",
+    "Zelda's Lullaby",
+    "Bomb Bag",
+    "Boomerang",
+    "Bottle",
+    "Bow",
+    "Claim Check",
+    "Din's Fire",
+    "Eyeball Frog",
+    "Eyedrops",
+    "Fire Arrows",
+    "Goron Tunic",
+    "Hover Boots",
+    "Iron Boots",
+    "Kokiri Sword",
+    "Lens of Truth",
+    "Light Arrows",
+    "Magic Meter",
+    "Megaton Hammer",
+    "Mirror Shield",
+    "Prescription",
+    "Progressive Hookshot",
+    "Progressive Scale",
+    "Progressive Strength Upgrade",
+    "Progressive Wallet",
+    "Ruto's Letter",
+    "Slingshot",
+    "Zora Tunic"]
+kchecks.sort()
+
 # repeatable items
 repeatables = [
     "Bomb Bag",
@@ -262,7 +302,9 @@ def question(type):
          "entrance": pc("Entrance?", "m"),
          "cow": pc("Remaining Cow checks:", "m"),
          "scrub": pc("Remaining Scrub checks:", "m"),
-         "trick": pc("Select trick from list:", "y")}
+         "trick": pc("Select trick from list:", "y"),
+         "whints": pc("Select WOTH location:", "y"),
+         "kchecks": pc("Check found there?", "y")}
     return q.get(type)
 
 def pc(text, color):
@@ -293,6 +335,10 @@ def askq(olist, qt, ct):
         for h in r:
             if qt == "song_check" or qt == "entrance":
                 if h[2] in plist: plist.remove(h[2])
+            elif qt == "kchecks":
+                for item in h[2:]:
+                    if item in plist and item not in repeatables:
+                        plist.remove(item)
             else:
                 if h[1] in plist and h[1] not in repeatables:
                     plist.remove(h[1])
@@ -403,6 +449,21 @@ def item_hint():
 def dead_hint():
     ghint("dead")
 
+def woth_edit():
+    global hints
+
+    whints = []
+    for hint in hints:
+        if hint[0] == "woth":
+            whints.append(hint[1])
+    s = askq(whints, "whints", "woth_edit")
+    k = askq(kchecks, "kchecks", "woth")
+
+    for index, hint in enumerate(hints):
+        if hint[1] == s:
+            hints[index].append(k)
+    main_loop()
+
 def woth_hint():
     ghint("woth")
 
@@ -453,6 +514,8 @@ def phint(type, text, check):
                 print("\t" + h[1] + pc(" is at ","m") + h[2] + pc(" for ","m") + h[3] + pc(" rupees","m"))
             elif check == "long":
                 print("\t" + h[1] + pc(" is at ","m") + h[2])
+            elif check == "woth":
+                print("\t" + h[1] + " (" + ', '.join(h[2:]) + ")")
             else:
                 print("\t" + h[1])
 
@@ -482,7 +545,7 @@ def writef():
     pickle.dump(hints, f)
 
 def main_hints():
-    phint("woth", pc("Way of the Hero:", "y"), "short")
+    phint("woth", pc("Way of the Hero:", "y"), "woth")
     phint("fool", pc("Barren Locations:", "r"), "short")
     phint("song", pc("Songs:", "g"), "long")
     phint("item", pc("Items:", "c"), "long")
@@ -503,10 +566,11 @@ def main_prompt():
           "c": cow_sanity,
           "r": scrub_sanity,
           "a": advanced_tricks,
+          "n": woth_edit,
           "e": pexit}
 
     print("\n=====================================================================")
-    print("\n" + pc("(W)","y") + "oth | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead")
+    print("\n" + pc("(W)","y") + "oth | " + pc("(N)","y") + "ew Check | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead")
     print("\n" + "s" + pc("(H)","m") + "ops | " + pc("(C)","m") + "ows | " + "sc" + pc("(R)","m") + "ubs | " + "en" + pc("(T)","m") + "rances")
     print("\n" + pc("(A)","w") + "dvanced tricks | " + pc("(U)","w") + "ndo | " + pc("(K)","w") + "ill | " + pc("(E)","w") + "xit ", end="")
     c = getkey()
