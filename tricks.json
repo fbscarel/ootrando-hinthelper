@@ -32,7 +32,17 @@
   {
     "Name": "Gerudo Valley crate as Adult Link with Bombchus",
     "Requirements": "Bombchu",
-    "Description": "Align perpendicularly with canyon on the 3rd dark patch from wall\nShield turn 90 degrees right\n1st person align sword hilt with vertex between canyon walls\nHold Bombchu 1 1/2 flashes above head, let go"
+    "Description": "Align with wooder pillar farthest from tent\n2x sidehop left, 2x backflip\nShield turn 180 degrees, shield drop bombchu"
+  },
+  {
+    "Name": "Gerudo Valley crate reach as Adult Link with Hover Boots",
+    "Requirements": "Hover Boots",
+    "Description": "Line up with wall, Link's hat left side at seam\nTop-right crouch stab, shield turn 180 degrees\nWalk straight ahead for a bit, equip Hover Boots\nBackwalk, 1x sidehop left at end of hover animation\nJumpslash, quickly pause, unequip Hover Boots"
+  },
+  {
+    "Name": "Gerudo Valley waterfall reach as Adult Link with Hover Boots",
+    "Requirements": "Hover Boots",
+    "Description": "From crate position, line up with wall\nShield turn 90 degrees left\nBackwalk, jumpslash as you fall"
   },
   {
     "Name": "Water Temple Dragon room without Iron Boots",
@@ -57,7 +67,7 @@
   {
     "Name": "Water Temple 3F target with Hookshot",
     "Requirements": "Hookshot",
-    "Description": "From dungeon entrance, ledge grab, ESS 90 degrees left\n1x front roll, ESS the least amount possible to your right\nSidehop right until you hit a wall, hold target, approach furthest possible point before falling\nHookshot up"
+    "Description": "From dungeon entrance, ledge grab, ESS 90 degrees left\n1x front roll, ESS the least amount possible to your right\nSidehop right until you hit a wall, hold target, approach farthest possible point before falling\nHookshot up"
   },
   {
     "Name": "Water Temple 3F water leveler with nothing",
@@ -82,7 +92,7 @@
   {
     "Name": "Fire Temple glitchless block jump",
     "Requirements": "Nothing",
-    "Description": "Climb block ledge on rightmost spot with sword out\nRight slash + shield, 1x sidehop left\nShield turn 90 degrees right\n1st person align camera so that the middle of chest on minimap goes through far ledge wall\nJump straight ahead, hold up + left"
+    "Description": "Climb block ledge on rightmost spot with sword out\nRight slash + shield, 1x sidehop left\nShield turn 90 degrees right\n1st person align camera so that the left side of chest on minimap goes through far ledge wall\nJump straight ahead, hold up + left"
   },
   {
     "Name": "GTG Hookshotless silver rupee setup",
@@ -98,5 +108,10 @@
     "Name": "Jabu Jabu fast switch before Barinade",
     "Requirements": "Boomerang",
     "Description": "Run up to the pointy end connecting floor and slope\nAim Link's hat just left of where vine in the walls start, pull Boomerang all the way up\nShoot, 3x sidehop left"
+  },
+  {
+    "Name": "Spirit Temple double torches with Din's Fire",
+    "Requirements": "Dins's Fire",
+    "Description": "Stand in the corner next to torch closest to entry door\n3x backflip, 1x sidehop right\nUse Din's Fire"
   }
 ]
