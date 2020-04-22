@@ -367,7 +367,11 @@ def askq(olist, qt, ct):
     s = ""
     i = 0
 
-    r = [e for e in hints if e[0] == ct]
+    if qt == "kchecks" and (ct == "woth" or ct == "woth_maybe"):
+        r = [e for e in hints if e[0] == "woth" or e[0] == "woth_maybe"]
+    else:
+        r = [e for e in hints if e[0] == ct]
+
     if len(r) > 0:
         for h in r:
             if qt == "song_check" or qt == "entrance":
@@ -464,8 +468,8 @@ def ghint(ct):
     elif ct == "woth":
         set = False
         for index, hint in enumerate(hints):
-            if hint[0] == c:
-                hints[index].insert(0, "woth")
+            if hint[1] == c:
+                hints[index][0] = "woth"
                 set = True
         if not set:
             hints.append([ct, c])
@@ -509,7 +513,7 @@ def woth_edit():
             set = True
 
     if not set:
-        hints.append([s, k])
+        hints.append(["woth_maybe", s, k])
 
     main_loop()
 
