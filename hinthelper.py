@@ -61,10 +61,10 @@ items = [
     "Megaton Hammer",
     "Mirror Shield",
     "Prescription",
-    "Progressive Hookshot",
-    "Progressive Scale",
-    "Progressive Strength Upgrade",
-    "Progressive Wallet",
+    "Prog Hookshot",
+    "Prog Scale",
+    "Prog Strength",
+    "Prog Wallet",
     "Ruto's Letter",
     "Slingshot",
     "Small Key",
@@ -102,10 +102,10 @@ kchecks = [
     "Megaton Hammer",
     "Mirror Shield",
     "Prescription",
-    "Progressive Hookshot",
-    "Progressive Scale",
-    "Progressive Strength Upgrade",
-    "Progressive Wallet",
+    "Prog Hookshot",
+    "Prog Scale",
+    "Prog Strength",
+    "Prog Wallet",
     "Ruto's Letter",
     "Slingshot",
     "Zora Tunic"]
@@ -122,10 +122,10 @@ repeatables = [
     "Deku Stick Capacity",
     "Goron Tunic",
     "Magic Meter",
-    "Progressive Hookshot",
-    "Progressive Scale",
-    "Progressive Strength Upgrade",
-    "Progressive Wallet",
+    "Prog Hookshot",
+    "Prog Scale",
+    "Prog Strength",
+    "Prog Wallet",
     "Slingshot",
     "Small Key",
     "Triforce Piece",
@@ -221,6 +221,43 @@ full_checks = [
     "Zora's Fountain",
     "Zora's River",
     "Zora's Fountain Ice Lake"]
+
+# woth-valid places
+woth_places = [
+    "Bottom of the Well",
+    "Deku Tree",
+    "Desert Colossus",
+    "Death Mountain Crater",
+    "Death Mountain Trail",
+    "Dodongo's Cavern",
+    "Fire Temple",
+    "Forest Temple",
+    "Ganon's Castle",
+    "Gerudo Fortress",
+    "Gerudo Valley",
+    "Goron City",
+    "Graveyard",
+    "GTG",
+    "Haunted Wasteland",
+    "Hyrule Castle",
+    "Hyrule Field",
+    "Ice Cavern",
+    "Jabu Jabu",
+    "Kakariko Village",
+    "Kokiri Forest",
+    "Lake Hylia",
+    "Lon Lon Ranch",
+    "Lost Woods",
+    "Market",
+    "Outside Ganon's Castle",
+    "Sacred Forest Meadow",
+    "Shadow Temple",
+    "Spirit Temple",
+    "Temple of Time",
+    "Water Temple",
+    "Zora's Domain",
+    "Zora's Fountain",
+    "Zora's River"]
 
 # shops
 shops = [
@@ -411,6 +448,8 @@ def ghint(ct):
         c = askq(cow_checks, "cow", ct)
     elif ct == "scrubs":
         c = askq(scrub_checks, "scrub", ct)
+    elif ct == "woth" or ct == "fool":
+        c = askq(woth_places, "location", ct)
     else:
         c = askq(full_checks, "location", ct)
 
@@ -422,6 +461,14 @@ def ghint(ct):
         cow_checks.remove(c)
     elif ct == "scrubs":
         scrub_checks.remove(c)
+    elif ct == "woth":
+        set = False
+        for index, hint in enumerate(hints):
+            if hint[0] == c:
+                hints[index].insert(0, "woth")
+                set = True
+        if not set:
+            hints.append([ct, c])
     else:
         hints.append([ct, c])
 
@@ -452,16 +499,18 @@ def dead_hint():
 def woth_edit():
     global hints
 
-    whints = []
-    for hint in hints:
-        if hint[0] == "woth":
-            whints.append(hint[1])
-    s = askq(whints, "whints", "woth_edit")
+    s = askq(woth_places, "location", "woth_edit")
     k = askq(kchecks, "kchecks", "woth")
 
+    set = False
     for index, hint in enumerate(hints):
         if hint[1] == s:
             hints[index].append(k)
+            set = True
+
+    if not set:
+        hints.append([s, k])
+
     main_loop()
 
 def woth_hint():
@@ -554,6 +603,7 @@ def main_hints():
     phint("entrance", pc("Entrances:", "m"), "long")
 
 def main_prompt():
+    #global hints
     op = {"s": song_hint,
           "i": item_hint,
           "d": dead_hint,
@@ -573,6 +623,8 @@ def main_prompt():
     print("\n" + pc("(W)","y") + "oth | " + pc("(N)","y") + "ew Check | " + pc("(F)","r") + "ool | " + pc("(S)","g") + "ong | " + pc("(I)","c") + "tem | " + pc("(D)","u") + "ead")
     print("\n" + "s" + pc("(H)","m") + "ops | " + pc("(C)","m") + "ows | " + "sc" + pc("(R)","m") + "ubs | " + "en" + pc("(T)","m") + "rances")
     print("\n" + pc("(A)","w") + "dvanced tricks | " + pc("(U)","w") + "ndo | " + pc("(K)","w") + "ill | " + pc("(E)","w") + "xit ", end="")
+    #print("\n")
+    #print(hints)
     c = getkey()
     try:
         op[c.lower()]()

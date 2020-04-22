@@ -113,5 +113,10 @@
     "Name": "Spirit Temple double torches with Din's Fire",
     "Requirements": "Dins's Fire",
     "Description": "Stand in the corner next to torch closest to entry door\n3x backflip, 1x sidehop right\nUse Din's Fire"
+  },
+  {
+    "Name": "Sacred Forest Meadow glitchless maze jump",
+    "Requirements": "Nothing",
+    "Description": "Kill the moblin for safety\nLine up facing first right wall, close to edge\n1x sidehop left, 1x backflip, shield turn 90 degrees left\n2x sidehop left, 1x backflip\nFirst person align sword hilt just barely after seam\nIMPORTANT: do not leave first person mode\nPause, jump straight ahead, hold up + right"
   }
 ]
